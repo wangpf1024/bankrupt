@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bankrupt.workflow.center.mapper.HistoryExtMapper">
+
+
+    <select id="latestData" resultType="cn.bankrupt.workflow.center.domain.vo.VariableVo">
+        select
+        ahv.ID_ as id,
+        ahv.PROC_DEF_KEY_ as procDefKey,
+        ahv.NAME_ as name ,
+        ahv.VAR_TYPE_ as vtype,
+        ahv.LONG_ as vlong,
+        ahv.TEXT_ as value,
+        ahv.CREATE_TIME_ as createTime,
+        ahv.PROC_INST_ID_ as processInstanceId
+        from act_hi_varinst ahv
+        where ahv.NAME_ like '\_%'
+        <if test="latestTime != null">
+            and ahv.CREATE_TIME_ &gt; #{latestTime}
+        </if>
+        <if test="processInstanceId != null">
+            and ahv.PROC_INST_ID_ = #{processInstanceId}
+        </if>
+        order by ahv.CREATE_TIME_ desc
+    </select>
+
+</mapper>
