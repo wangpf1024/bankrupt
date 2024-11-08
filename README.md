@@ -1,6 +1,7 @@
 # Bankrupt Workflow
 
-后端基于 Camunda 7.21 二次开发
+> 后端基于 Camunda 7.21 + jdk17 + Spring Boot 3.0 + Redis（Singleton）+ Mysql 8
+
 
 > Still working on coding ,sooner or later will update the README file. 
 > 
@@ -30,6 +31,7 @@
 ├────── process-mybatis-generator      //生成数据库基础代码 
 ├────── process-open-api-sdk      //开放API  
 ~~~
+
 
 ## 帮助文档
 
