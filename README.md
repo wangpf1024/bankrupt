@@ -1,13 +1,11 @@
-# workflow
-后端基于 camunda 7.21 二次开发
-提供流程模型编辑到部署。
+# Bankrupt Workflow
 
+后端基于 Camunda 7.21 二次开发
+
+> Still working on coding ,soner or later will update the README file. Thinks
 
 ## 系统模块
-
 ~~~
-workflow  
-
 ├── process-common            // 核心系统-通用模块
 ├── process-framework             //  核心系统-Spring BOOT框架
 ├── process-orm         // 数据库ORM
@@ -30,6 +28,3 @@ workflow
 ├────── process-mybatis-generator      //生成数据库基础代码 
 ├────── process-open-api-sdk      //开放API  
 ~~~
-
-
-Still working on coding ,soner or later will update the README file. Thinks
