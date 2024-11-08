@@ -2,9 +2,9 @@
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: "jdbc:mysql://192.168.10.110:33080/pansome_flow_form?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&failOverReadOnly=false&useSSL=true"
-    username: "pansome"
-    password: "pansome2022+"
+    url: "jdbc:mysql:///pansome_flow_form?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&failOverReadOnly=false&useSSL=true"
+    username: ""
+    password: ""
     driver-class-name: com.mysql.cj.jdbc.Driver
     druid:
       initial-size: 5
