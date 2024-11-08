@@ -4,7 +4,7 @@
 
 > Still working on coding ,sooner or later will update the README file. 
 > 
-> Best regards, yours.
+> Best regards.
 
 ## 代码系统模块说明
 ~~~
