@@ -22,13 +22,15 @@ public  class UserNextTaskHandlerImpl implements WorkFlowMessageHandler {
     ProcessRedisCache processRedisCache;
 
     @Override
-    public void execute() {
-        String objStr = processRedisCache.rightPopWithSchema(ProcessWorkFlowBaseEventEnum.user_next_task.getCode());
-        if(StringUtils.isEmpty(objStr))return;
-        TaskMsgDataDto dto = JSON.parseObject(objStr,TaskMsgDataDto.class);
+    public String getEventCode(){
+        return  ProcessWorkFlowBaseEventEnum.user_next_task.getCode();
+    }
+
+    @Override
+    public void execute(TaskMsgDataDto dto) {
         String msg = JSONUtil.toJsonStr(dto);
         //创建用户执行任务
-        Long id = processRedisCache.enqueueMessage(ProcessWorkFlowBaseEventEnum.quanguocheng_channel.getCode() + dto.getEventCode(), msg);
+        processRedisCache.enqueueMessage(ProcessWorkFlowBaseEventEnum.quanguocheng_channel.getCode() + dto.getEventCode(), msg);
         logger.info("UserNextTaskHandlerImpl quanguocheng date created: " + msg);
     }
 }

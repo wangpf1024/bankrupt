@@ -1,18 +1,15 @@
 package cn.bankrupt.workflow.center.service.impl;
 
-import cn.bankrupt.workflow.idm.service.OpenApiService;
-import cn.bankrupt.workflow.idm.service.OpenApiUserService;
-import cn.bankrupt.workflow.idm.service.WorkFlowTenantService;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import cn.bankrupt.workflow.ResultBean;
 import cn.bankrupt.workflow.enums.BaseExceptionEnum;
 import cn.bankrupt.workflow.idm.entity.WorkFlowTenant;
 import cn.bankrupt.workflow.idm.service.*;
-import cn.bankrupt.workflow.openapi.vo.GroupReqExt;
-import cn.bankrupt.workflow.openapi.vo.TenantReqExt;
-import cn.bankrupt.workflow.openapi.vo.UserRelationReqExt;
-import cn.bankrupt.workflow.openapi.vo.UserReqExt;
+import cn.bankrupt.workflow.openapi.domain.vo.GroupReqExt;
+import cn.bankrupt.workflow.openapi.domain.vo.TenantReqExt;
+import cn.bankrupt.workflow.openapi.domain.vo.UserRelationReqExt;
+import cn.bankrupt.workflow.openapi.domain.vo.UserReqExt;
 import jakarta.ws.rs.core.Response;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.ProcessEngine;
@@ -27,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

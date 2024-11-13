@@ -6,14 +6,14 @@
  */
 package cn.bankrupt.workflow.model.controller;
 
-import cn.bankrupt.workflow.web.AbstractController;
 import cn.bankrupt.workflow.model.entity.WorkFlowFormModel;
 import cn.bankrupt.workflow.model.service.WorkFlowFormModelService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import cn.bankrupt.workflow.web.AbstractController;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 /**   
  * <p>自动生成工具：mybatis-dsc-generator</p>
  * 

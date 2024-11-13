@@ -6,8 +6,8 @@
  */
 package cn.bankrupt.workflow.center.mapper;
 
-import cn.bankrupt.workflow.center.domain.vo.VariableVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import cn.bankrupt.workflow.center.domain.vo.VariableVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,6 +30,6 @@ public interface HistoryExtMapper extends BaseMapper{
      * @param latestTime
      * @return
      */
-    List<VariableVo> latestData(@Param("processInstanceId")String processInstanceId, @Param("latestTime") Date latestTime);
+    List<VariableVo> latestData(@Param("processInstanceId")String processInstanceId,@Param("latestTime") Date latestTime);
 
 }

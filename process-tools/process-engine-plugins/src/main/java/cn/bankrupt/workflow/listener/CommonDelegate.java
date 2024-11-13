@@ -15,7 +15,7 @@ public class CommonDelegate {
         dto.setProcessDefinitionId(delegateTask.getProcessDefinitionId());
         dto.setProcessDefinitionKey(((TaskEntity) delegateTask).getProcessDefinition().getKey());
         dto.setAssignee(delegateTask.getAssignee());
-        dto.setVariables(delegateTask.getVariables());
+        //dto.setVariables(delegateTask.getVariables());
         dto.setTaskDefinitionKey(delegateTask.getTaskDefinitionKey());
         dto.setBusinessKey(((TaskEntity) delegateTask).getProcessInstance().getBusinessKey());
         dto.setCurrentTaskId(delegateTask.getId());

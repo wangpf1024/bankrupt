@@ -4,7 +4,7 @@
  * Copyright(c) 2020 王鹏飞 Co. Ltd. 
  * All right reserved. 
  */
-package cn.bankrupt.workflow.openapi.vo;
+package cn.bankrupt.workflow.openapi.domain.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

@@ -7,14 +7,7 @@
 package cn.bankrupt.workflow.model.controller;
 
 import cn.bankrupt.workflow.model.domain.ModelInfoVo;
-import cn.bankrupt.workflow.model.entity.WorkFlowFormModelInfo;
-import cn.bankrupt.workflow.model.entity.WorkFlowModel;
-import cn.bankrupt.workflow.model.entity.WorkFlowModelCategory;
-import cn.bankrupt.workflow.model.entity.WorkFlowModelInfo;
-import cn.bankrupt.workflow.model.service.WorkFlowFormModelInfoService;
-import cn.bankrupt.workflow.model.service.WorkFlowModelCategoryService;
-import cn.bankrupt.workflow.model.service.WorkFlowModelInfoService;
-import cn.bankrupt.workflow.model.service.WorkFlowModelService;
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import cn.bankrupt.workflow.ResultBean;
 import cn.bankrupt.workflow.enums.BaseExceptionEnum;
@@ -23,15 +16,27 @@ import cn.bankrupt.workflow.model.enums.DeploymentStatus;
 import cn.bankrupt.workflow.model.enums.ModelType;
 import cn.bankrupt.workflow.model.service.*;
 import cn.bankrupt.workflow.web.AbstractController;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.Api;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.List;
 
 /**
@@ -46,7 +51,7 @@ import java.util.List;
 @Api(description = "流程分类",value="流程分类" )
 @RestController
 @RequestMapping("/process-model-server/workFlowModelCategory")
-public class WorkFlowModelCategoryController extends AbstractController<WorkFlowModelCategoryService, WorkFlowModelCategory>{
+public class WorkFlowModelCategoryController extends AbstractController<WorkFlowModelCategoryService,WorkFlowModelCategory>{
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -92,7 +97,9 @@ public class WorkFlowModelCategoryController extends AbstractController<WorkFlow
 
 		//复制新的表单模型关联信息
 		List<WorkFlowFormModelInfo> formModelInfos = workFlowFormModelInfoService.list(Wrappers.<WorkFlowFormModelInfo>lambdaQuery()
-				.eq(WorkFlowFormModelInfo::getModelId, modelInfo.getModelId()).orderByDesc(WorkFlowFormModelInfo::getVersion));
+				.eq(WorkFlowFormModelInfo::getModelId, modelInfo.getModelId())
+				.eq(WorkFlowFormModelInfo::getCategoryId, modelInfoVo.getCategoryId())
+				.orderByDesc(WorkFlowFormModelInfo::getVersion));
 
 		if (CollectionUtils.isEmpty(formModelInfos)) {
 			return ResultBean.ofError(BaseExceptionEnum.EC404.getCode(),"表单模型");
@@ -103,6 +110,7 @@ public class WorkFlowModelCategoryController extends AbstractController<WorkFlow
 		String modelKey = category.getCode()+"_"+copy.getModelKey();
 		copy.setModelKey(modelKey);
 
+
 		//设置版本号
 		WorkFlowModel newset = workFlowModelService.getOne(Wrappers.<WorkFlowModel>lambdaQuery()
 				.eq(WorkFlowModel::getModelKey, modelKey).orderByDesc(WorkFlowModel::getVersion),false);
@@ -111,16 +119,50 @@ public class WorkFlowModelCategoryController extends AbstractController<WorkFlow
 		if(newset !=null){
 			copy.setVersion(newset.getVersion() + 1);
 		}
+		String newName = category.getCategoryName() +":"+model.getModelName()+":version:"+copy.getVersion();
+		copy.setModelName(newName);
+
+		// 创建 SAXBuilder 实例
+		SAXBuilder saxBuilder = new SAXBuilder();
+
+		// 解析 XML 字符串
+        try {
+
+			Document document = saxBuilder.build(new StringReader(copy.getModelXml()));
+			Element rootElement = document.getRootElement();
+
+			// 查找 <bpmn:process> 元素
+			Element process = rootElement.getChild("process", rootElement.getNamespace("bpmn"));
+			if (process != null) {
+				String value = modelKey+"_"+ DateUtil.today()+"_"+copy.getVersion();
+				process.setAttribute("id",value);
+			}
+
+			// Convert the modified document back to a string
+			StringWriter stringWriter = new StringWriter();
+			XMLOutputter xmlOutputter = new XMLOutputter();
+			xmlOutputter.setFormat(Format.getPrettyFormat());
+
+			xmlOutputter.output(document, stringWriter);
+			copy.setModelXml(stringWriter.toString());
+
+        } catch (JDOMException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 		workFlowModelService.save(copy);
 
 		WorkFlowModelInfo info = new WorkFlowModelInfo();
 		info.setModelId(copy.getId().toString());
 		info.setCategoryId(category.getId());
-		info.setName(modelInfoVo.getName() == null? modelInfo.getName():modelInfoVo.getName());
+		info.setName(newName);
 		info.setModelType(ModelType.OUTER.getCode());
 		info.setTenantId(modelInfoVo.getTenantId());
 		info.setModelKey(modelKey);
 		info.setStatus(DeploymentStatus.INIT.getCode());
+		info.setOrderNum(copy.getVersion());
 
 		workFlowModelInfoService.save(info);
 

@@ -42,7 +42,6 @@ public  class UserCreateHandlerImpl implements WorkFlowMessageHandler {
     @Autowired
     WorkFlowFormModelInfoService workFlowFormModelInfoService;
 
-
     @Autowired
     ProcessEngine processEngine;
 
@@ -57,41 +56,16 @@ public  class UserCreateHandlerImpl implements WorkFlowMessageHandler {
         return processEngine;
     }
 
+    @Override
+    public String getEventCode(){
+        return  ProcessWorkFlowBaseEventEnum.user_create.getCode();
+    }
 
     @Override
-    public void execute() {
-
-        String objStr = processRedisCache.rightPopWithSchema(ProcessWorkFlowBaseEventEnum.user_create.getCode());
-        if(StringUtils.isEmpty(objStr))return;
-
-        TaskMsgDataDto dto = JSON.parseObject(objStr,TaskMsgDataDto.class);
-        if(dto != null){
-
-            WorkFlowModelInfo modelInfo = workFlowModelInfoService.getOne(Wrappers.<WorkFlowModelInfo>lambdaQuery()
-                    .eq(WorkFlowModelInfo::getDefinitionId,dto.getProcessDefinitionId())
-                    .eq(WorkFlowModelInfo::getStatus, DeploymentStatus.DEPLOYED.getCode()),false);
-
-            if(modelInfo != null){
-                WorkFlowModelCategory workFlowModelCategory = workFlowModelCategoryService.getById(modelInfo.getCategoryId());
-                dto.setModelKey(modelInfo.getModelKey());
-                dto.setModelName(modelInfo.getName());
-                dto.setCategoryName(workFlowModelCategory.getCategoryName());
-                dto.setCategoryCode(workFlowModelCategory.getCode());
-                dto.setCategoryId(modelInfo.getCategoryId());
-                dto.setTenantId(modelInfo.getTenantId());
-                //查询其他信息
-                List<WorkFlowFormModelInfo> formModelInfos = workFlowFormModelInfoService.list(Wrappers.<WorkFlowFormModelInfo>lambdaQuery()
-                        .eq(WorkFlowFormModelInfo::getModelId, modelInfo.getModelId()).orderByDesc(WorkFlowFormModelInfo::getVersion));
-                if (!CollectionUtils.isEmpty(formModelInfos)) {
-                    WorkFlowFormModelInfo modelInfo1 = formModelInfos.get(0);
-                    dto.setFormKey(modelInfo1.getFormKey());
-                }
-            }
-            String msg = JSONUtil.toJsonStr(dto);
-            //创建用户执行任务
-            Long id = processRedisCache.enqueueMessage(ProcessWorkFlowBaseEventEnum.quanguocheng_channel.getCode() + dto.getEventCode(), msg);
-            logger.info("UserCreateHandlerImpl quanguocheng date created: " + msg);
-        }
-
+    public void execute(TaskMsgDataDto dto) {
+        String msg = JSONUtil.toJsonStr(dto);
+        //创建用户执行任务
+        processRedisCache.enqueueMessage(ProcessWorkFlowBaseEventEnum.quanguocheng_channel.getCode() + dto.getEventCode(), msg);
+        logger.info("UserCreateHandlerImpl quanguocheng date created: " + msg);
     }
 }

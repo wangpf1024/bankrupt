@@ -2,10 +2,10 @@ package cn.bankrupt.workflow.idm.service;
 
 
 import cn.bankrupt.workflow.ResultBean;
-import cn.bankrupt.workflow.openapi.vo.GroupReqExt;
-import cn.bankrupt.workflow.openapi.vo.TenantReqExt;
-import cn.bankrupt.workflow.openapi.vo.UserRelationReqExt;
-import cn.bankrupt.workflow.openapi.vo.UserReqExt;
+import cn.bankrupt.workflow.openapi.domain.vo.GroupReqExt;
+import cn.bankrupt.workflow.openapi.domain.vo.TenantReqExt;
+import cn.bankrupt.workflow.openapi.domain.vo.UserRelationReqExt;
+import cn.bankrupt.workflow.openapi.domain.vo.UserReqExt;
 
 import java.util.List;
 

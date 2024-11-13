@@ -39,7 +39,6 @@ public class CreateEventImpl implements UserTaskEventInterface {
         dto.setEventCode(eventCode);
         String msg = JSONUtil.toJsonStr(dto);
         //创建用户执行任务
-        processRedisCache.enqueueMessageWithSchema(eventCode, msg);
-        logger.info("event : "+dto.getEventCode() + " task push msg " + msg);
+        processRedisCache.enqueueMessageWithSchema(ProcessWorkFlowBaseEventEnum.process_event_step_by_step.getCode(), msg);
     }
 }

@@ -25,4 +25,9 @@ public interface UserTaskService {
      */
     void handleNextUserTask(TaskMsgDataDto dto, Map<String, TaskDefinition> actives);
 
+    /**
+     * 处理用户与分组关系
+     * @param dto
+     */
+    void handleUserTaskGroup(TaskMsgDataDto dto, Map<String, TaskDefinition> actives);
 }

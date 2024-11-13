@@ -45,9 +45,9 @@
     <modules>
         <module>process-framework</module>
         <module>process-common</module>
+        <module>process-tools</module>
         <module>process-orm</module>
         <module>process-starter</module>
-        <module>process-tools</module>
     </modules>
 
     <!-- 依赖声明 -->

@@ -14,5 +14,5 @@ public interface HistoryExtService {
      * @param latestTime
      * @return
      */
-    List<VariableVo> latestData(String processInstanceId, Date latestTime);
+    List<VariableVo> latestData(String processInstanceId,Date latestTime);
 }

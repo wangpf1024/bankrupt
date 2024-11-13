@@ -25,10 +25,12 @@ public class CommonProcessEndDelegate extends CommonDelegate implements JavaDele
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         TaskMsgDataDto dto = super.prams(execution);
+        //设置发起人
+        dto.setStartBy((String) execution.getVariable(ProcessWorkFlowBaseEventEnum.variable_last_completed_by.getCode()));
         dto.setEventCode(eventCode);
         String msg = JSONUtil.toJsonStr(dto);
         //创建用户执行任务
-        processRedisCache.enqueueMessageWithSchema(eventCode, msg);
+        processRedisCache.enqueueMessageWithSchema(ProcessWorkFlowBaseEventEnum.process_event_step_by_step.getCode(), msg);
         logger.info("执行流程结束ID: " + execution.getId() + " msg: " + msg);
     }
 }

@@ -1,12 +1,12 @@
 package cn.bankrupt.workflow.idm.service.impl;
 
-import cn.bankrupt.workflow.idm.service.LoginService;
 import cn.hutool.core.util.IdUtil;
 import cn.bankrupt.workflow.cache.ProcessRedisCache;
 import cn.bankrupt.workflow.constants.Constants;
 import cn.bankrupt.workflow.domain.LoginBody;
 import cn.bankrupt.workflow.domain.OpenApiBody;
 import cn.bankrupt.workflow.domain.AccessVo;
+import cn.bankrupt.workflow.idm.service.LoginService;
 import cn.bankrupt.workflow.utils.JwtUtil;
 import cn.bankrupt.workflow.utils.TokenUtils;
 import cn.bankrupt.workflow.web.AuthenticationContextHolder;

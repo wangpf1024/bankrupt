@@ -110,7 +110,7 @@ public class JsonResult<T> implements Serializable{
     	return this;
     }
     public JsonResult(Throwable throwable) {
-    	this.operate=Const.OPERATE_FAILED;
+    	this.operate= Const.OPERATE_FAILED;
         if(throwable instanceof NullPointerException){
             this.code= "1001";
             this.message="空指针："+throwable;

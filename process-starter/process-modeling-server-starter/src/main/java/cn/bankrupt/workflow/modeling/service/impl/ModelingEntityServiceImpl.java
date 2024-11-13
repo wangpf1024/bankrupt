@@ -1,15 +1,14 @@
 package cn.bankrupt.workflow.modeling.service.impl;
 
+import cn.bankrupt.workflow.enums.FieldScope;
+import cn.bankrupt.workflow.modeling.domain.params.ModelingEntityExt;
+import cn.bankrupt.workflow.modeling.domain.params.ModelingFieldDefExt;
 import cn.bankrupt.workflow.modeling.service.*;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import cn.bankrupt.workflow.ResultBean;
-import cn.bankrupt.workflow.enums.*;
-import cn.bankrupt.workflow.modeling.domain.params.ModelingEntityExt;
-import cn.bankrupt.workflow.modeling.domain.params.ModelingFieldDefExt;
 import cn.bankrupt.workflow.modeling.entity.ModelingEntityDef;
 import cn.bankrupt.workflow.modeling.entity.ModelingEntityField;
 import cn.bankrupt.workflow.modeling.entity.ModelingFieldDef;
-import cn.bankrupt.workflow.modeling.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -17,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class ModelingEntityServiceImpl implements ModelingEntityService {

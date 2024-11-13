@@ -7,7 +7,8 @@
 package cn.bankrupt.workflow.modeling.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**   
  * <p> 实体定义扩展：</p>

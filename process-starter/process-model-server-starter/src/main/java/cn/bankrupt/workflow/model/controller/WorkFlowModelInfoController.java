@@ -9,18 +9,21 @@ package cn.bankrupt.workflow.model.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import cn.bankrupt.workflow.ResultBean;
 import cn.bankrupt.workflow.model.entity.WorkFlowModelCategory;
+import cn.bankrupt.workflow.model.entity.WorkFlowModelInfo;
 import cn.bankrupt.workflow.model.enums.DeploymentStatus;
 import cn.bankrupt.workflow.model.service.WorkFlowModelCategoryService;
-import cn.bankrupt.workflow.web.AbstractController;
-import cn.bankrupt.workflow.model.entity.WorkFlowModelInfo;
 import cn.bankrupt.workflow.model.service.WorkFlowModelInfoService;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.*;
+import cn.bankrupt.workflow.web.AbstractController;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -56,7 +59,8 @@ public class WorkFlowModelInfoController extends AbstractController<WorkFlowMode
 
 		List<WorkFlowModelInfo> list = baseService.list(Wrappers.<WorkFlowModelInfo>lambdaQuery()
 				.eq(WorkFlowModelInfo::getModelKey, modelKey)
-				.eq(WorkFlowModelInfo::getStatus,DeploymentStatus.DEPLOYED.getCode()));
+				.eq(WorkFlowModelInfo::getStatus,DeploymentStatus.DEPLOYED.getCode())
+				.orderByDesc(WorkFlowModelInfo::getOrderNum));
 
 		if(CollectionUtils.isEmpty(list)){
 			return ResultBean.ofError("无可执行流程实例");

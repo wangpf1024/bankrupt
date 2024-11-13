@@ -16,7 +16,7 @@ public class HistoryExtServiceImpl implements HistoryExtService {
     HistoryExtMapper historyExtMapper;
 
     @Override
-    public List<VariableVo> latestData(String processInstanceId, Date latestTime) {
+    public List<VariableVo> latestData(String processInstanceId,Date latestTime) {
         return historyExtMapper.latestData(processInstanceId,latestTime);
     }
 }

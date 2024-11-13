@@ -1,8 +1,9 @@
 package cn.bankrupt.workflow;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import cn.bankrupt.workflow.enums.BaseExceptionEnum;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Collection;
 

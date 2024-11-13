@@ -34,26 +34,15 @@ public class UserAssignmentHandlerImpl implements WorkFlowMessageHandler {
     ProcessRedisCache processRedisCache;
 
     @Override
-    public void execute() {
-        String objStr = processRedisCache.rightPopWithSchema(ProcessWorkFlowBaseEventEnum.user_assignment.getCode());
-        if(StringUtils.isEmpty(objStr))return;
-        TaskMsgDataDto dto = JSON.parseObject(objStr,TaskMsgDataDto.class);
-        if(dto != null){
-            WorkFlowModelInfo modelInfo = workFlowModelInfoService.getOne(Wrappers.<WorkFlowModelInfo>lambdaQuery()
-                    .eq(WorkFlowModelInfo::getDefinitionId,dto.getProcessDefinitionId())
-                    .eq(WorkFlowModelInfo::getStatus, DeploymentStatus.DEPLOYED.getCode()),false);
+    public String getEventCode(){
+        return  ProcessWorkFlowBaseEventEnum.user_assignment.getCode();
+    }
 
-            if(modelInfo != null){
-                WorkFlowModelCategory workFlowModelCategory = workFlowModelCategoryService.getById(modelInfo.getCategoryId());
-                dto.setModelKey(modelInfo.getModelKey());
-                dto.setModelName(modelInfo.getName());
-                dto.setCategoryName(workFlowModelCategory.getCategoryName());
-                dto.setCategoryCode( workFlowModelCategory.getCode());
-            }
-            String msg = JSONUtil.toJsonStr(dto);
-            //创建用户执行任务
-            Long id = processRedisCache.enqueueMessage(ProcessWorkFlowBaseEventEnum.quanguocheng_channel.getCode() + dto.getEventCode(), msg);
-            logger.info("UserAssignmentHandlerImpl quanguocheng date created: " + msg);
-        }
+    @Override
+    public void execute(TaskMsgDataDto dto) {
+        String msg = JSONUtil.toJsonStr(dto);
+        //创建用户执行任务
+        processRedisCache.enqueueMessage(ProcessWorkFlowBaseEventEnum.quanguocheng_channel.getCode() + dto.getEventCode(), msg);
+        logger.info("UserAssignmentHandlerImpl quanguocheng date created: " + msg);
     }
 }

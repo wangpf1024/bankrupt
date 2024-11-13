@@ -1,5 +1,10 @@
 package cn.bankrupt.workflow.msg;
 
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson2.JSON;
+import cn.bankrupt.workflow.cache.ProcessRedisCache;
+import cn.bankrupt.workflow.dto.TaskMsgDataDto;
+import cn.bankrupt.workflow.enums.ProcessWorkFlowBaseEventEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +14,10 @@ import java.util.List;
 
 @Component
 public class WorkFlowDequeueMessageConsumer implements Runnable {
+
+
+    @Autowired
+    ProcessRedisCache processRedisCache;
 
     private Thread consumerThread;
 
@@ -31,15 +40,29 @@ public class WorkFlowDequeueMessageConsumer implements Runnable {
     @Override
     public void run() {
         while (running) {
-            for (WorkFlowMessageHandler handler : handlers) {
-                try {
-                    handler.execute();
-                }catch (Exception e){
-                    e.printStackTrace();
+            String objStr = processRedisCache.rightPopWithSchema(ProcessWorkFlowBaseEventEnum.process_event_step_by_step.getCode());
+            if(StrUtil.isNotEmpty(objStr)){
+                //类型转换
+                TaskMsgDataDto dto = JSON.parseObject(objStr,TaskMsgDataDto.class);
+                if(dto != null
+                        && StrUtil.isNotEmpty(dto.getEventCode())){
+
+                    for (WorkFlowMessageHandler handler : handlers) {
+                        try {
+                            //按照事件编码匹配
+                            if(handler.getEventCode() != null
+                                    && dto.getEventCode().equals(handler.getEventCode())){
+                                handler.execute(dto);
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
                 }
             }
             try {
-                Thread.sleep(500l);
+                Thread.sleep(1000l);
             }catch (Exception e){
                 Thread.currentThread().interrupt();
             }

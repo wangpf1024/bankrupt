@@ -4,9 +4,9 @@ package cn.bankrupt.workflow.center.msg;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson2.JSON;
 import cn.bankrupt.workflow.cache.ProcessRedisCache;
-import cn.bankrupt.workflow.msg.WorkFlowMessageHandler;
 import cn.bankrupt.workflow.dto.TaskMsgDataDto;
 import cn.bankrupt.workflow.enums.ProcessWorkFlowBaseEventEnum;
+import cn.bankrupt.workflow.msg.WorkFlowMessageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
-public  class ProcessEndHandlerImpl implements WorkFlowMessageHandler {
+public  class UserTaskRejectHandlerImpl implements WorkFlowMessageHandler {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -23,7 +23,7 @@ public  class ProcessEndHandlerImpl implements WorkFlowMessageHandler {
 
     @Override
     public String getEventCode(){
-        return  ProcessWorkFlowBaseEventEnum.process_end.getCode();
+        return  ProcessWorkFlowBaseEventEnum.user_reject.getCode();
     }
 
     @Override
@@ -31,6 +31,6 @@ public  class ProcessEndHandlerImpl implements WorkFlowMessageHandler {
         String msg = JSONUtil.toJsonStr(dto);
         //创建用户执行任务
         processRedisCache.enqueueMessage(ProcessWorkFlowBaseEventEnum.quanguocheng_channel.getCode() + dto.getEventCode(), msg);
-        logger.info("ProcessEndHandlerImpl quanguocheng date created: " + msg);
+        logger.info("UserTaskRejectHandlerImpl quanguocheng date created: " + msg);
     }
 }

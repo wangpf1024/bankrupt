@@ -38,17 +38,17 @@ public class FieldScheme {
     @JsonIgnore
     public static FieldScheme getFieldScheme(ModelingFieldDef fieldDef) {
         if (FieldType.number.name().equals(fieldDef.getType())) {
-            return JSONUtil.toBean(fieldDef.getScheme(),NumberInputFieldScheme.class);
+            return JSONUtil.toBean(fieldDef.getScheme(), NumberInputFieldScheme.class);
         }else if (FieldType.date.name().equals(fieldDef.getType())) {
-            return JSONUtil.toBean(fieldDef.getScheme(),DateFieldScheme.class);
+            return JSONUtil.toBean(fieldDef.getScheme(), DateFieldScheme.class);
         }else if (FieldType.text.name().equals(fieldDef.getType())) {
-            return JSONUtil.toBean(fieldDef.getScheme(),TextInputFieldScheme.class);
+            return JSONUtil.toBean(fieldDef.getScheme(), TextInputFieldScheme.class);
         }else if (FieldType.radio.name().equals(fieldDef.getType())) {
-            return JSONUtil.toBean(fieldDef.getScheme(),RedioFieldScheme.class);
+            return JSONUtil.toBean(fieldDef.getScheme(), RedioFieldScheme.class);
         }else if (FieldType.select.name().equals(fieldDef.getType())) {
-            return JSONUtil.toBean(fieldDef.getScheme(),SelectFieldScheme.class);
+            return JSONUtil.toBean(fieldDef.getScheme(), SelectFieldScheme.class);
         }else if (FieldType.options.name().equals(fieldDef.getType())) {
-            return JSONUtil.toBean(fieldDef.getScheme(),OptionsFieldScheme.class);
+            return JSONUtil.toBean(fieldDef.getScheme(), OptionsFieldScheme.class);
         }
         return null;
     }
