@@ -343,8 +343,8 @@
             <id>dev</id>
             <properties>
                 <db.url>"jdbc:mysql://192.168.10.110:33080/pansome_flow_form?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;useSSL=true"</db.url>
-                <db.username>"pansome"</db.username>
-                <db.password>"pansome2022+"</db.password>
+                <db.username>""</db.username>
+                <db.password>""</db.password>
             </properties>
         </profile>
 
@@ -352,8 +352,8 @@
             <id>test</id>
             <properties>
                 <db.url>"jdbc:mysql://192.168.10.110:33080/pansome_flow_form?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;useSSL=true"</db.url>
-                <db.username>"pansome"</db.username>
-                <db.password>"pansome2022+"</db.password>
+                <db.username>""</db.username>
+                <db.password>""</db.password>
             </properties>
         </profile>
 
@@ -361,8 +361,8 @@
             <id>uat</id>
             <properties>
                 <db.url>"jdbc:mysql://192.168.10.110:33080/pansome_flow_form_uat?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;useSSL=true"</db.url>
-                <db.username>"pansome"</db.username>
-                <db.password>"pansome2022+"</db.password>
+                <db.username>""</db.username>
+                <db.password>""</db.password>
             </properties>
         </profile>
 
@@ -370,7 +370,7 @@
             <id>prod</id>
             <properties>
                 <db.url>"jdbc:mysql://localhost:33006/pansome_flow_form?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=true&amp;serverTimezone=GMT%2B8"</db.url>
-                <db.username>"yhbimdbausr"</db.username>
+                <db.username>""</db.username>
                 <db.password>"Cyh_2005iWlm2021!"</db.password>
                 <logger.dir>/home/junesit/yhBIMApp/bimapprear/logs</logger.dir>
             </properties>
