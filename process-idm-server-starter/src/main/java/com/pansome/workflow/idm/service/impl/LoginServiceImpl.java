@@ -1,0 +1,81 @@
+package com.pansome.workflow.idm.service.impl;
+
+import cn.hutool.core.util.IdUtil;
+import com.pansome.workflow.cache.ProcessRedisCache;
+import com.pansome.workflow.constants.Constants;
+import com.pansome.workflow.domain.LoginBody;
+import com.pansome.workflow.domain.OpenApiBody;
+import com.pansome.workflow.domain.AccessVo;
+import com.pansome.workflow.idm.service.LoginService;
+import com.pansome.workflow.utils.JwtUtil;
+import com.pansome.workflow.utils.TokenUtils;
+import com.pansome.workflow.web.AuthenticationContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+@Service
+public class LoginServiceImpl implements LoginService {
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    ProcessRedisCache processRedisCache;
+
+
+    @Override
+    public String login(LoginBody loginBody) {
+        return getAccessToken(loginBody.getUsername(),loginBody.getPassword());
+    }
+
+    @Override
+    public String accessToken(OpenApiBody openApiBody) {
+        return getAccessToken(openApiBody.getAccessName(),openApiBody.getAccessKey());
+    }
+
+
+    /**
+     * 获取token
+     * @param name
+     * @param password
+     * @return
+     */
+    private String getAccessToken(String name,String password){
+
+        UsernamePasswordAuthenticationToken authenticationToken
+                = new UsernamePasswordAuthenticationToken(name, password);
+
+        AuthenticationContextHolder.setContext(authenticationToken);
+
+        // 该方法会去调用 UserDetailsServiceImpl.loadUserByUsername
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+        AccessVo loginUser = (AccessVo) authentication.getPrincipal();
+
+        loginUser.setToken(IdUtil.fastSimpleUUID());
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(Constants.LOGIN_USER_KEY, loginUser.getToken());
+
+        String token  = jwtUtil.generateToken(loginUser.getUsername()
+                ,claims);
+
+        String userKey = TokenUtils.getTokenKey(loginUser.getToken());
+
+        processRedisCache.setCacheObject(userKey, loginUser, 3000, TimeUnit.MINUTES);
+
+        return token;
+    }
+
+
+}

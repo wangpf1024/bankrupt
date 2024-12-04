@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pansome.workflow.modeling.mapper.ModelingEntityFieldMapper">
+
+	<resultMap id="BaseResultMap" type="com.pansome.workflow.modeling.entity.ModelingEntityField">
+		<id column="id" property="id" />
+		<id column="m_key" property="mKey" />
+		<id column="field_id" property="fieldId" />
+		<id column="create_by" property="createBy" />
+		<id column="create_time" property="createTime" />
+		<id column="update_by" property="updateBy" />
+		<id column="update_time" property="updateTime" />
+		<id column="is_deleted" property="isDeleted" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, m_key, field_id, create_by, create_time, update_by, update_time, is_deleted
+	</sql>
+	
+</mapper>

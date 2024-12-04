@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.bankrupt.workflow.openapi.config.WorkFlowOpenApiConfig

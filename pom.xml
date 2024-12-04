@@ -2,18 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 	
-    <groupId>cn.bankrupt</groupId>
+    <groupId>com.pansome</groupId>
     <artifactId>workflow</artifactId>
     <version>1.0.0</version>
 
     <name>workflow</name>
     <description>流程管理系统</description>
-
-    <packaging>pom</packaging>
-
+    
     <properties>
         <camunda.spring.boot.starter.version>7.21.0</camunda.spring.boot.starter.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,15 +37,32 @@
         <hutool-all.version>5.8.28</hutool-all.version>
         <jackson-databind.version>2.17.0</jackson-databind.version>
         <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
+        <jsqlparser.version>4.6</jsqlparser.version>
+        <pagehelper-spring-boot-starter.verion>1.4.6</pagehelper-spring-boot-starter.verion>
     </properties>
 
     <modules>
-        <module>process-framework</module>
         <module>process-common</module>
-        <module>process-tools</module>
-        <module>process-orm</module>
-        <module>process-starter</module>
+        <module>process-framework</module>
+        <module>process-idm-orm</module>
+        <module>process-model-orm</module>
+        <module>process-center-orm</module>
+        <module>process-modeling-orm</module>
+        <module>process-center-server-starter</module>
+        <module>process-idm-server-starter</module>
+        <module>process-model-server-starter</module>
+        <module>process-mybatis-generator</module>
+        <module>process-modeling-server-starter</module>
+        <module>process-open-api-sdk</module>
+        <module>process-scheduled-server-starter</module>
+        <module>process-scheduled-orm</module>
+        <module>process-admin-web-starter</module>
+        <module>process-engine-plugins</module>
+        <module>process-cache</module>
+        <module>process-msg-subscriber</module>
     </modules>
+
+    <packaging>pom</packaging>
 
     <!-- 依赖声明 -->
     <dependencyManagement>
@@ -237,6 +251,23 @@
                 <version>${javax.annotation-api.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.github.jsqlparser</groupId>
+                <artifactId>jsqlparser</artifactId>
+                <version>${jsqlparser.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper-spring-boot-starter.verion}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.github.jsqlparser</groupId>
+                        <artifactId>jsqlparser</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -303,5 +334,48 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+
+
+
+    <profiles>
+
+        <profile>
+            <id>dev</id>
+            <properties>
+                <db.url>"jdbc:mysql://192.168.10.110:33080/pansome_flow_form?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;useSSL=true"</db.url>
+                <db.username>"pansome"</db.username>
+                <db.password>"pansome2022+"</db.password>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>test</id>
+            <properties>
+                <db.url>"jdbc:mysql://192.168.10.110:33080/pansome_flow_form?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;useSSL=true"</db.url>
+                <db.username>"pansome"</db.username>
+                <db.password>"pansome2022+"</db.password>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>uat</id>
+            <properties>
+                <db.url>"jdbc:mysql://192.168.10.110:33080/pansome_flow_form_uat?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;useSSL=true"</db.url>
+                <db.username>"pansome"</db.username>
+                <db.password>"pansome2022+"</db.password>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <properties>
+                <db.url>"jdbc:mysql://localhost:33006/pansome_flow_form?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=true&amp;serverTimezone=GMT%2B8"</db.url>
+                <db.username>"yhbimdbausr"</db.username>
+                <db.password>"Cyh_2005iWlm2021!"</db.password>
+                <logger.dir>/home/junesit/yhBIMApp/bimapprear/logs</logger.dir>
+            </properties>
+        </profile>
+
+    </profiles>
 
 </project>
